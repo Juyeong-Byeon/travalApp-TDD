@@ -1,17 +1,12 @@
 import "./App.css";
-
-import React from "react";
-import { SummaryPage } from "./pages/summary/SummaryPage";
-import Type from "./pages/order/Type";
-import logo from "./logo.svg";
+import { OrderPage } from "./pages/order/OrderPage";
 
 function App() {
-	return (
-		<div className="App">
-			<SummaryPage />
-			<Type orderType='products'/>
-		</div>
-	);
+  return (
+    <div className="App" style={{ padding: "50px" }}>
+      <OrderPage />
+    </div>
+  );
 }
 
 export default App;
