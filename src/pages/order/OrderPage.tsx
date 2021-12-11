@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Type from "./Type";
 
 interface Props {}
 
 export const OrderPage = (props: Props) => {
+  const [totalPrice, setTotalPrice] = useState(0);
   return (
     <div>
       <h1>Travel Products</h1>
@@ -25,7 +26,7 @@ export const OrderPage = (props: Props) => {
 
         <div>
           <h2>
-            Total price: <br />
+            Total price: <span data-testid="price">{totalPrice}</span> <br />
           </h2>
           <button>주문</button>
         </div>

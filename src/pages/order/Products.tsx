@@ -17,8 +17,8 @@ export default function Products({ name, imagePath }: Props): ReactElement {
         <label htmlFor="amount">{name}</label>
         <input
           type="number"
-          name="amount"
-          id="amount"
+          name={`${name}_amount`}
+          id={`${name}_amount`}
           min={0}
           defaultValue={0}
         />

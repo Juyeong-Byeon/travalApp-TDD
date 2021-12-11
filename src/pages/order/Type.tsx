@@ -1,11 +1,12 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 
 import Products from "./Products";
 import axios from "axios";
 import { ErrorBanner } from "../../components/ErrorBanner";
 import { Options } from "./Options";
+import { OrderContext } from "./OrderContext";
 
-type OrderType = "products" | "options";
+export type OrderType = "products" | "options";
 
 interface Props {
   orderType: OrderType;
@@ -14,12 +15,14 @@ interface Props {
 interface ProductDetail {
   name: string;
   imagePath: string;
+  description: string;
 }
 
 export default function Type({ orderType: type }: Props): ReactElement {
   const [items, setItems] = useState<ProductDetail[]>([]);
 
   const [errorStatus, setErrorStatus] = useState(false);
+  const { order, updateItemCount } = useContext(OrderContext);
 
   useEffect(() => {
     const loadItems = async (orderType: OrderType) => {
@@ -49,6 +52,7 @@ export default function Type({ orderType: type }: Props): ReactElement {
         key={item.name}
         name={item.name}
         imagePath={item.imagePath}
+        description={item.description}
       />
     );
   });
@@ -57,8 +61,14 @@ export default function Type({ orderType: type }: Props): ReactElement {
     <div>
       <h2>주문 종류</h2>
       <p>하나의 가격</p>
-      <p>총 가격</p>
-      {optionItemList}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: type === "products" ? "row" : "column",
+        }}
+      >
+        {optionItemList}
+      </div>
     </div>
   );
 }
