@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { OrderContext } from "./OrderContext";
 import Type from "./Type";
 
 interface Props {}
 
 export const OrderPage = (props: Props) => {
-  const [totalPrice, setTotalPrice] = useState(0);
+  const { order } = useContext(OrderContext);
+
   return (
     <div>
       <h1>Travel Products</h1>
@@ -26,7 +28,8 @@ export const OrderPage = (props: Props) => {
 
         <div>
           <h2>
-            Total price: <span data-testid="price">{totalPrice}</span> <br />
+            Total price:{" "}
+            <span data-testid="price">{order?.totalPrice?.total}</span> <br />
           </h2>
           <button>주문</button>
         </div>

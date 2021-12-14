@@ -53,6 +53,8 @@ export default function Type({ orderType: type }: Props): ReactElement {
         name={item.name}
         imagePath={item.imagePath}
         description={item.description}
+        updateItemCount={updateItemCount}
+        order={order}
       />
     );
   });
@@ -61,6 +63,7 @@ export default function Type({ orderType: type }: Props): ReactElement {
     <div>
       <h2>주문 종류</h2>
       <p>하나의 가격</p>
+      <p>총 가격: {order.totalPrice["total"]}</p>
       <div
         style={{
           display: "flex",

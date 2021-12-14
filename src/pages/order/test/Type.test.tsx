@@ -1,12 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "../../mocks/server";
+import { OrderContextProvider } from "../OrderContext";
 
 import Type from "../Type";
 
 describe("product list", () => {
   it("should render image well", async () => {
-    render(<Type orderType="products" />);
+    render(<Type orderType="products" />, { wrapper: OrderContextProvider });
 
     const productsImage: HTMLImageElement[] = (await screen.findAllByRole(
       "img"
@@ -24,7 +25,7 @@ describe("product list", () => {
       })
     );
 
-    render(<Type orderType="products" />);
+    render(<Type orderType="products" />, { wrapper: OrderContextProvider });
 
     const errorView = await screen.findByTestId("error-banner");
 
@@ -32,7 +33,7 @@ describe("product list", () => {
   });
 
   it("should render options", async () => {
-    render(<Type orderType="options" />);
+    render(<Type orderType="options" />, { wrapper: OrderContextProvider });
 
     const options = await screen.findAllByRole("checkbox");
 

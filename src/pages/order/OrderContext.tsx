@@ -1,26 +1,49 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import { OrderType } from "./Type";
-interface Orders {
+interface OrderDetails {
   products: Map<string, number>;
   options: Map<string, number>;
 }
 
-interface _OrderContext {
-  order?: {
-    orders: Orders;
-    totalPrice: number;
+export interface Order {
+  details: OrderDetails;
+  totalPrice: {
+    products: number;
+    options: number;
+    total: number;
   };
-  updateItemCount?: (
+}
+
+interface _OrderContext {
+  order: Order;
+  updateItemCount: (
     itemName: string,
     newItemCount: number,
     orderType: OrderType
   ) => void;
 }
 
-export const OrderContext = createContext<_OrderContext>({});
+export const OrderContext = createContext<_OrderContext>({
+  order: {
+    details: {
+      products: new Map(),
+      options: new Map(),
+    },
+    totalPrice: {
+      products: 0,
+      options: 0,
+      total: 0,
+    },
+  },
+  updateItemCount: (
+    itemName: string,
+    newItemCount: number,
+    orderType: OrderType
+  ) => {},
+});
 
 export function OrderContextProvider(props: any) {
-  const [orders, setOrders] = useState<Orders>({
+  const [details, setDetail] = useState<OrderDetails>({
     products: new Map(),
     options: new Map(),
   });
@@ -32,37 +55,41 @@ export function OrderContextProvider(props: any) {
   });
 
   useEffect(() => {
-    const productsPrice: number = calculateSubtotal("products", orders);
-    const optionPrice: number = calculateSubtotal("options", orders);
-
+    const productsPrice: number = calculateSubtotal("products", details);
+    const optionPrice: number = calculateSubtotal("options", details);
+    const totalValue: number = productsPrice + optionPrice;
     setTotalPrice({
       products: productsPrice,
       options: optionPrice,
-      total: productsPrice + optionPrice,
+      total: totalValue,
     });
-  }, [orders]);
+  }, [details]);
 
-  const value = useMemo(() => {
+  const value: _OrderContext = useMemo(() => {
     function updateItemCount(
       itemName: string,
       newItemCount: number,
       orderType: OrderType
     ) {
-      const newOrderCounts = { ...orders };
+      const newOrderCounts = { ...details };
 
-      const orderCountsMap = orders[orderType];
+      const orderCountsMap = newOrderCounts[orderType];
       orderCountsMap.set(itemName, newItemCount);
-      setOrders(newOrderCounts);
+      setDetail(newOrderCounts);
     }
 
-    return [{ ...orders, totalPrice }, updateItemCount];
-  }, [orders]);
+    return { order: { details, totalPrice }, updateItemCount };
+  }, [details, totalPrice]);
 
   return <OrderContext.Provider value={value} {...props} />;
 }
 
-function calculateSubtotal(orderType: OrderType, orderCounts: Orders): number {
+function calculateSubtotal(
+  orderType: OrderType,
+  orderCounts: OrderDetails
+): number {
   const order = orderCounts[orderType];
   const sum = [...order.values()].reduce((acc, current) => acc + current, 0);
-  return sum;
+
+  return orderType === "products" ? sum * 1000 : sum * 100;
 }
