@@ -26,7 +26,7 @@ export const Options = ({
   };
   return (
     <form>
-      <label htmlFor={`${name} action`}>{`${name}: ${description}`}</label>
+      <label htmlFor={`${name} action`}>{name}</label>
       <input
         type="checkbox"
         onChange={onClickHandler}

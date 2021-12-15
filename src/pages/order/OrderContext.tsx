@@ -91,5 +91,5 @@ function calculateSubtotal(
   const order = orderCounts[orderType];
   const sum = [...order.values()].reduce((acc, current) => acc + current, 0);
 
-  return orderType === "products" ? sum * 1000 : sum * 100;
+  return orderType === "products" ? sum * 1000 : sum * 500;
 }

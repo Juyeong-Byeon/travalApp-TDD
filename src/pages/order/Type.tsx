@@ -18,7 +18,7 @@ interface ProductDetail {
   description: string;
 }
 
-export default function Type({ orderType: type }: Props): ReactElement {
+export default function Type({ orderType }: Props): ReactElement {
   const [items, setItems] = useState<ProductDetail[]>([]);
 
   const [errorStatus, setErrorStatus] = useState(false);
@@ -35,14 +35,14 @@ export default function Type({ orderType: type }: Props): ReactElement {
         setErrorStatus(true);
       }
     };
-    loadItems(type);
-  }, [type]);
+    loadItems(orderType);
+  }, [orderType]);
 
   if (errorStatus) {
     return <ErrorBanner message="에러가 발생했습니다." />;
   }
 
-  const ItemComponent = type === "products" ? Products : Options;
+  const ItemComponent = orderType === "products" ? Products : Options;
 
   const optionItemList = items.map((item) => {
     if (ItemComponent == null) return;
@@ -63,11 +63,13 @@ export default function Type({ orderType: type }: Props): ReactElement {
     <div>
       <h2>주문 종류</h2>
       <p>하나의 가격</p>
-      <p>총 가격: {order.totalPrice["total"]}</p>
+      <p>
+        {orderType} price: {order.totalPrice[orderType]}
+      </p>
       <div
         style={{
           display: "flex",
-          flexDirection: type === "products" ? "row" : "column",
+          flexDirection: orderType === "products" ? "row" : "column",
         }}
       >
         {optionItemList}

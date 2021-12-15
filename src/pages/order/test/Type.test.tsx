@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+// import { render, screen } from "@testing-library/react";
 import { rest } from "msw";
+import { render, screen } from "../../../test-utils";
 import { server } from "../../mocks/server";
 import { OrderContextProvider } from "../OrderContext";
 
@@ -7,7 +8,7 @@ import Type from "../Type";
 
 describe("product list", () => {
   it("should render image well", async () => {
-    render(<Type orderType="products" />, { wrapper: OrderContextProvider });
+    render(<Type orderType="products" />);
 
     const productsImage: HTMLImageElement[] = (await screen.findAllByRole(
       "img"
