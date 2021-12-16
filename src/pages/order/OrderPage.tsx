@@ -2,7 +2,9 @@ import React, { useContext, useState } from "react";
 import { OrderContext } from "./OrderContext";
 import Type from "./Type";
 
-interface Props {}
+interface Props {
+  setPage?: (page: number) => void;
+}
 
 export const OrderPage = (props: Props) => {
   const { order } = useContext(OrderContext);
@@ -28,10 +30,10 @@ export const OrderPage = (props: Props) => {
 
         <div>
           <h2>
-            Total price:{" "}
-            <span data-testid="price">{order?.totalPrice?.total}</span> <br />
+            Total price:{order.totalPrice.total || 0}
+            <br />
           </h2>
-          <button>주문</button>
+          <button onClick={() => props.setPage?.(1)}>주문</button>
         </div>
       </div>
     </div>
