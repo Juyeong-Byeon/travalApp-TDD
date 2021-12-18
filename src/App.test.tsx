@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -13,7 +13,6 @@ describe("order step", () => {
     const option = await screen.findByRole("checkbox", {
       name: "Dinner",
     });
-
     userEvent.type(product, "1");
 
     userEvent.click(option);
@@ -46,7 +45,7 @@ describe("order step", () => {
     expect(productPrice).toHaveTextContent("1000");
     expect(optionPrice).toHaveTextContent("500");
 
-    expect(screen.getByText("1 America")).toBeInTheDocument();
+    expect(screen.getByText("America : 1")).toBeInTheDocument();
     expect(screen.getByText("Dinner")).toBeInTheDocument();
 
     const confirmCheckBox = screen.getByRole("checkbox", {
@@ -59,6 +58,33 @@ describe("order step", () => {
     });
 
     userEvent.click(confirmButton);
+
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+
+    expect(await screen.findByText("주문이 성공했습니다.")).toBeInTheDocument();
+
+    const loadingDisappeard = screen.queryByText(/loading/i);
+    expect(loadingDisappeard).not.toBeInTheDocument();
+
+    const goBackButton = screen.getByRole("button", {
+      name: "돌아가기",
+    });
+
+    userEvent.click(goBackButton);
+
+    expect(screen.getByText("Travel Products")).toBeInTheDocument();
+
+    const productTotal = screen.getByText("products price: 0");
+    expect(productTotal).toBeInTheDocument();
+
+    const optionsTotal = screen.getByText("options price: 0");
+    expect(optionsTotal).toBeInTheDocument();
+
+    waitFor(() =>
+      screen.getByRole("spinbutton", {
+        name: "America",
+      })
+    );
   });
 });
 

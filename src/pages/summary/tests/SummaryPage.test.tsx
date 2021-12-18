@@ -4,7 +4,7 @@ import { SummaryPage } from "../SummaryPage";
 
 describe("test button disable", () => {
   it("should be able to click only if checkbox is checked", () => {
-    render(<SummaryPage />);
+    render(<SummaryPage setStep={() => {}} />);
 
     const checkbox = screen.getByRole("checkbox", {
       name: "주문하려는 것을 확인 하셨나요?",

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import { OrderType } from "./Type";
-interface OrderDetails {
+export interface OrderDetails {
   products: Map<string, number>;
   options: Map<string, number>;
 }
@@ -21,6 +21,7 @@ interface _OrderContext {
     newItemCount: number,
     orderType: OrderType
   ) => void;
+  resetOrders: () => void;
 }
 
 export const OrderContext = createContext<_OrderContext>({
@@ -40,19 +41,23 @@ export const OrderContext = createContext<_OrderContext>({
     newItemCount: number,
     orderType: OrderType
   ) => {},
+  resetOrders: () => {},
 });
 
-export function OrderContextProvider(props: any) {
-  const [details, setDetail] = useState<OrderDetails>({
-    products: new Map(),
-    options: new Map(),
-  });
+const defaultDetails = {
+  products: new Map(),
+  options: new Map(),
+};
 
-  const [totalPrice, setTotalPrice] = useState({
-    products: 0,
-    options: 0,
-    total: 0,
-  });
+const defaultPrices = {
+  products: 0,
+  options: 0,
+  total: 0,
+};
+
+export function OrderContextProvider(props: any) {
+  const [details, setDetail] = useState<OrderDetails>(defaultDetails);
+  const [totalPrice, setTotalPrice] = useState(defaultPrices);
 
   useEffect(() => {
     const productsPrice: number = calculateSubtotal("products", details);
@@ -78,7 +83,12 @@ export function OrderContextProvider(props: any) {
       setDetail(newOrderCounts);
     }
 
-    return { order: { details, totalPrice }, updateItemCount };
+    function resetOrders(): void {
+      setDetail(defaultDetails);
+      setTotalPrice(defaultPrices);
+    }
+
+    return { order: { details, totalPrice }, updateItemCount, resetOrders };
   }, [details, totalPrice]);
 
   return <OrderContext.Provider value={value} {...props} />;

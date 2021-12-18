@@ -11,8 +11,8 @@ function App() {
     <div className="App" style={{ padding: "50px" }}>
       <OrderContextProvider>
         {step === 0 && <OrderPage setPage={setStep} />}
-        {step === 1 && <SummaryPage />}
-        {step === 2 && <CompletePage />}
+        {step === 1 && <SummaryPage setStep={setStep} />}
+        {step === 2 && <CompletePage setStep={setStep} />}
       </OrderContextProvider>
     </div>
   );

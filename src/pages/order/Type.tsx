@@ -52,7 +52,6 @@ export default function Type({ orderType }: Props): ReactElement {
         key={item.name}
         name={item.name}
         imagePath={item.imagePath}
-        description={item.description}
         updateItemCount={updateItemCount}
         order={order}
       />

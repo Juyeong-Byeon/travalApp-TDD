@@ -4,7 +4,6 @@ import { OrderType } from "./Type";
 
 interface Props {
   name: string;
-  description: string;
   order: Order;
   updateItemCount: (
     itemName: string,
@@ -15,7 +14,6 @@ interface Props {
 
 export const Options = ({
   name,
-  description,
   order: {
     details: { options },
   },
@@ -28,6 +26,7 @@ export const Options = ({
     <form>
       <label htmlFor={`${name} action`}>{name}</label>
       <input
+        defaultChecked={false}
         type="checkbox"
         onChange={onClickHandler}
         name={`${name} action`}

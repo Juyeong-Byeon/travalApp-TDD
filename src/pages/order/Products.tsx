@@ -39,7 +39,7 @@ export default function Products({
           id={`${name}_amount`}
           min={0}
           onChange={handleChange}
-          value={order?.details?.products?.get(name)}
+          value={order?.details?.products?.get(name) || 0}
         />
       </form>
     </div>
